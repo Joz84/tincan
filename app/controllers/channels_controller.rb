@@ -7,7 +7,9 @@ class ChannelsController < ApplicationController
   def show
     @subscription = Subscription.find_by(user: current_user, channel: @channel)
     @new_messages_limit = @subscription.new_messages_limit
-    @subscription.update( last_message: @channel.messages.last)
+    unless @channel.messages.empty?
+      @subscription.update( last_message_id: @channel.messages.last.id)
+    end
     @message = Message.new
     session[:user_ids] = [current_user.id]
     current_user.update(last_channel: @channel)
@@ -22,7 +24,7 @@ class ChannelsController < ApplicationController
   def first_connection
     @first_subscription = Subscription.new(channel: Channel.first, user: current_user)
     if @first_subscription.save
-      @channel = Channel.new({name: ""})
+      @channel = Channel.create({name: ""})
       selected_users = User.selected_users([current_user.id, User.first.id])
       @channel.init(selected_users, current_user)
       redirect_to @channel
@@ -33,9 +35,9 @@ class ChannelsController < ApplicationController
 
   def create
     @channel = Channel.new(channel_params)
-    selected_users = User.selected_users(session[:user_ids])
-    if selected_users.size > 1 && @channel.save
-      @channel.init(selected_users, current_user)
+    @selected_users = User.selected_users(session[:user_ids])
+    if @selected_users.size > 1 && @channel.save
+      @channel.init(@selected_users, current_user)
       redirect_to @channel
     else
       @users = current_user.friends
