@@ -1,7 +1,7 @@
 class Subscription < ApplicationRecord
   belongs_to :channel
   belongs_to :user
-  belongs_to :last_message, class_name: :Message, :foreign_key => "message_id"
+  # belongs_to :last_message, class_name: :Message, :foreign_key => "message_id"
   validates :channel, uniqueness: { scope: :user }
 
   def new_messages
@@ -24,7 +24,7 @@ class Subscription < ApplicationRecord
 
   def request_messages(sign)
     channel.messages
-           .where("id #{sign} ?", (last_message ? last_message : 0))
+           .where("id #{sign} ?", (last_message_id ? last_message_id : 0))
            .count
   end
 
