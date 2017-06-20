@@ -43,7 +43,8 @@
             </li>
           <% end %>
         </ul>
-        <%= simple_form_for [@channel, @message] do |f| %>
+        <div id="messages-table"></div>
+        <%= simple_form_for [@channel, @message], remote: true do |f| %>
           <%= f.input :content, label: false %>
           <%= f.button :submit, 'Send' %>
         <% end %>

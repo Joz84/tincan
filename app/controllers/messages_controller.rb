@@ -7,13 +7,18 @@ class MessagesController < ApplicationController
                             content: message_params[:content]
                           )
     if @message.save
-      redirect_to @channel
-    else
-      @messages = @channel.messages
-      @channels = current_user.channels
-      render 'channels/show'
+      ActionCable.server.broadcast "room_channel_#{@channel.id}",
+                                   content:  @message.content,
+                                   alias: current_user.alias
     end
   end
+  #     redirect_to @channel
+  #   else
+  #     @messages = @channel.messages
+  #     @channels = current_user.channels
+  #     render 'channels/show'
+  #   end
+  # end
 
   def destroy
     @message = Message.find(params[:id])

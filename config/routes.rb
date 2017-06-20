@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   get 'first-connection', to: "channels#first_connection"
   delete 'delete-selected-user/:id', to: "channels#delete_selected_user", as: "delete_selected_user"
 
+  mount ActionCable.server => '/cable'
 end
