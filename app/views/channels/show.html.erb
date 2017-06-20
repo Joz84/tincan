@@ -4,7 +4,7 @@
       <div class="col-md-2">
         <p><%= link_to "Create a new channel", new_channel_path %></p>
         <h3><%= @channel.default_name(current_user) %></h3>
-        <% if @admin %>
+        <% if @channel.one_to_one? || @admin %>
           <%= link_to "edit", edit_channel_path(@channel) %>
         <% end %>
         <ul>
