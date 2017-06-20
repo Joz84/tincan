@@ -9,8 +9,7 @@ App.room = App.cable.subscriptions.create "RoomChannel",
 
   received: (data) ->
     # Called when there's incoming data on the websocket for this channel
-    alert data.content
-    # messages = $('.messages-container')
-    # messages.append(data)
-    # scroll_bottom(messages)
-
+    unless data.content.blank?
+      $('#messages-table').append '<div class="message">' +
+        '<h1>' + data.alias + ":" + '</h1>' +
+        '<p>' + data.content + '</p>' + '</div>'
