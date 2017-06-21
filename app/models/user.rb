@@ -40,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def total_unread_messages_nbr
-    total = subscriptions.reduce(0){|sum, s| sum + s.new_messages}
+    total = subscriptions.reduce(0){|sum, s| sum + s.new_messages} #total = somme de 0 et nombre de messages non lus pour toutes les subscriptions
     total > 0 ? total : nil
   end
 

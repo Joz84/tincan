@@ -2,7 +2,6 @@ class MessagesController < ApplicationController
   before_action :find_channel, only: [:create, :destroy]
 
   def create
-    pry-byebug
     @message = Message.new( user: current_user,
                             channel: @channel,
                             content: message_params[:content]
@@ -10,14 +9,17 @@ class MessagesController < ApplicationController
     if @message.save
       ActionCable.server.broadcast "room_channel_#{@channel.id}",
                                     channel_id: @channel.id,
-                                    content:  @message.content,
-                                    alias: current_user.alias
-      ActionCable.server.broadcast "notification_channel",
-                                    channel_id: @channel.id,
-                                    total_messages: @channel.message.last.id,
-                                    content:  @message.content
+                                    message_id: @message.id,
+                                    content: @message.content,
+                                    msg_date: @message.updated_at.strftime("%d/%m/%y à %Hh%M"),
+                                    alias: current_user.alias,
+                                    user_id: current_user.id
 
-    end
+      ActionCable.server.broadcast "notification_channel",
+                                    content: @message.content,
+                                    channel_id: @channel.id
+                                    # total_messages: @subscription.last_message_id
+      end
   end
   #     redirect_to @channel
   #   else

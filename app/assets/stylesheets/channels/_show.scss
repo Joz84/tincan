@@ -5,3 +5,20 @@
 #submit-btn {
   display: none;
 }
+
+#message-infos > * {
+  display: inline-block;
+  vertical-align: middle;
+  margin:10px 0;
+}
+
+#messages-table li {
+  border-bottom: 1px solid rgba(black,0.1);
+  padding:0.5em;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  &:hover{
+    background-color: rgba(grey,0.06);
+  }
+}
