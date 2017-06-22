@@ -8,9 +8,17 @@ class MessagesController < ApplicationController
                           )
     if @message.save
       ActionCable.server.broadcast "room_channel_#{@channel.id}",
-                                   content:  @message.content,
-                                   alias: current_user.alias
-    end
+                                    channel_id: @channel.id,
+                                    message_id: @message.id,
+                                    content: @message.content,
+                                    msg_date: @message.updated_at.strftime("%d/%m/%y à %Hh%M"),
+                                    alias: current_user.alias,
+                                    user_id: current_user.id
+
+      ActionCable.server.broadcast "notification_channel",
+                                    content: @message.content,
+                                    channel_id: @channel.id
+      end
   end
   #     redirect_to @channel
   #   else
@@ -35,5 +43,4 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(:content)
   end
-
 end

@@ -1,3 +1,8 @@
+<div id="infos_for_messages_and_notifications">
+  <div id="current_user_id">
+    <%= current_user.id %>
+  </div>
+</div>
 <div class="wrapper-messenger">
   <div class="container-fluid">
     <div class="row">
@@ -17,36 +22,46 @@
         <ul>
           <% current_user.channels.each do |channel| %>
             <li>
-              <% if current_user.unread_messages_nbr(channel) %>
-                <div class="unread">
-              <% else %>
-                <div>
-              <% end %>
+              <% if current_user.unread_messages_nbr(channel) && (channel.messages.last.id != current_user.messages.last.id) %>
+              <div class="unread">
                 <%= link_to channel.default_name(current_user), channel %>
               </div>
+              <% elsif (channel == @channel) %>
+              <div>
+                <%= link_to channel.default_name(current_user), channel %>
+              </div>
+              <% else %>
+              <div id="unread-channel-<%= channel.id %>">
+                <%= link_to channel.default_name(current_user), channel %>
+              </div>
+              <% end %>
             </li>
           <% end %>
         </ul>
       </div>
       <div class="col-md-10">
-        <ul>
+        <ul id="messages-table">
           <% @channel.messages.each_with_index do |message, index| %>
-            <% if index == @new_messages_limit %>
+            <% if index == @new_messages_limit %> <!-- need to be done with action cable too -->
               New message <hr>
             <% end %>
-            <li>
-              <h1><%= message.user.alias %> </h1>
+            <li id="message-container">
+              <div id="message-infos">
+                <h1><%= message.user.alias %></h1>
+                <p> | <%= message.updated_at.strftime("%d/%m/%y à %Hh%M")%></p>
+              </div>
               <p><%= message.content %></p>
-              <% if current_user?(message.user) %>
-                <%= link_to "delete", [@channel, message], method: :delete, data: {confirm: "Are you sure! Do you want delete this post"}  %>
-              <% end %>
             </li>
+            <div id="delete-btn">
+              <% if current_user?(message.user) %>
+                  <%= link_to "delete", [@channel, message], method: :delete, data: {confirm: "Are you sure! Do you want delete this post"}  %>
+              <% end %>
+            </div>
           <% end %>
         </ul>
-        <div id="messages-table"></div>
         <%= simple_form_for [@channel, @message], remote: true do |f| %>
           <%= f.input :content, label: false %>
-          <%= f.button :submit, 'Send' %>
+          <%= f.button :submit, 'Send', id:"submit-btn" %>
         <% end %>
       </div>
     </div>

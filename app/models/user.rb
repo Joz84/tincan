@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :channels, through: :subscriptions
   has_many :users, through: :channels
-  belongs_to :last_channel, class_name: :Channel, foreign_key: "channel_id"
+  # belongs_to :last_channel, class_name: :Channel, foreign_key: "channel_id"
 
   validates :alias, presence: true
   validates :alias, uniqueness: true
@@ -40,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def total_unread_messages_nbr
-    total = subscriptions.reduce(0){|sum, s| sum + s.new_messages}
+    total = subscriptions.reduce(0){|sum, s| sum + s.new_messages} #total = somme de 0 et nombre de messages non lus pour toutes les subscriptions
     total > 0 ? total : nil
   end
 
