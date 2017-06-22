@@ -1,7 +1,7 @@
 class Channel < ApplicationRecord
   has_many :subscriptions, dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_many :users, through: :subscriptions
+  has_many :users, through: :subscriptions, dependent: :destroy
 
   def one_to_one?
     subscriptions.size == 2

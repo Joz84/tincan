@@ -10,15 +10,21 @@ App.room = App.cable.subscriptions.create "RoomChannel",
   received: (data) ->
     # Called when there's incoming data on the websocket for this channel
     unless data.content.blank?
-      $('#delete-btn-'+data.user_id).append '<a data-confirm="Are you sure! Do you want delete this post" rel="nofollow" data-method="delete" href="/channels/'+data.channel_id+'/messages/'+data.message_id+'">delete</a>'
+      current_user_id = $('#current_user_id').text()
+      a = data.user_id
+      b = parseInt(current_user_id)
       $('#messages-table').append '<li><div id="message-infos"><h1>' + data.alias + '</h1> <p> | '+ data.msg_date+'</p></div>' +
-        '<p>' + data.content + '</p></li>'
-      scroll_bottom()
+      '<p>' + data.content + '</p></li>'
+      if a is b
+        $('#messages-table').append "<div id='delete-btn'><a data-confirm='Are you sure! Do you want delete this post' rel='nofollow' data-method='delete' href='/channels/"+data.channel_id+"/messages/"+data.message_id+"'>delete</a>"
+
+
+      # scroll_bottom()
 
 
 $(document).ready ->
   submit_message()
-  scroll_bottom()
+  # scroll_bottom()
 
 submit_message = () ->
   $('#message_content').on 'keydown', (event) ->

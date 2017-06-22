@@ -12,7 +12,7 @@ class ChannelsController < ApplicationController
     end
     @message = Message.new
     session[:user_ids] = [current_user.id]
-    current_user.update(last_channel: @channel)
+    current_user.update(last_channel_id: @channel.id)
 
     # IMPORTANT. This is essential for the websocket authentification !!! :)
     cookies.signed[:user_id] = current_user.id
@@ -26,15 +26,18 @@ class ChannelsController < ApplicationController
   end
 
   def first_connection
-    @first_subscription = Subscription.new(channel: Channel.first, user: current_user)
-    if @first_subscription.save
-      @channel = Channel.create({name: ""})
-      selected_users = User.selected_users([current_user.id, User.first.id])
-      @channel.init(selected_users, current_user)
-      redirect_to @channel
-    else
-      redirect_to current_user.last_channel
-    end
+    @first_subscription = Subscription.create(channel: Channel.first, user: current_user)
+    @channel =  current_user.last_channel_id ? Channel.find(current_user.last_channel_id) : Channel.first
+    redirect_to @channel
+    # @first_subscription = Subscription.new(channel: Channel.first, user: current_user)
+    # if @first_subscription.save
+    #   @channel = Channel.create({name: ""})
+    #   selected_users = User.selected_users([current_user.id, User.first.id])
+    #   @channel.init(selected_users, current_user)
+    #   redirect_to @channel
+    # else
+    #   redirect_to current_user.last_channel
+    # end
   end
 
   def create

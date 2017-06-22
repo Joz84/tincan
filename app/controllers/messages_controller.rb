@@ -18,7 +18,6 @@ class MessagesController < ApplicationController
       ActionCable.server.broadcast "notification_channel",
                                     content: @message.content,
                                     channel_id: @channel.id
-                                    # total_messages: @subscription.last_message_id
       end
   end
   #     redirect_to @channel

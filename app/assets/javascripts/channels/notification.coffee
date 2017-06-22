@@ -10,5 +10,8 @@ App.room = App.cable.subscriptions.create "NotificationChannel",
   received: (data) ->
     # Called when there's incoming data on the websocket for this channel
     unless data.content.blank?
+      current_user_id = $('#current_user_id').text()
+      c = current_user_id
+
+
       $('#unread-channel-'+data.channel_id).addClass('unread')
-      console.log(data.total_messages)
