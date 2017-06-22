@@ -2,6 +2,9 @@
   <div id="current_user_id">
     <%= current_user.id %>
   </div>
+  <div id="unread_messages_nbr">
+    <%= current_user.total_unread_messages_nbr.to_f %>
+  </div>
 </div>
 <div class="wrapper-messenger">
   <div class="container-fluid">

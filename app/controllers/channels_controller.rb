@@ -17,6 +17,9 @@ class ChannelsController < ApplicationController
     # IMPORTANT. This is essential for the websocket authentification !!! :)
     cookies.signed[:user_id] = current_user.id
     cookies.signed[:channel_id] = params[:id]
+
+    @tab = current_user.channels.map(&:id)
+    gon.tab = @tab
   end
 
   def new
