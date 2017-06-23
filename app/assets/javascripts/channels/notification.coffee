@@ -13,13 +13,13 @@ App.room = App.cable.subscriptions.create "NotificationChannel",
       current_user_id = $('#current_user_id').text()
       unread_messages_nbr = $('.badge-blue').text()
       tab = gon.tab
-      c = parseInt(current_user_id)
-      d = parseInt(unread_messages_nbr)
+      c = parseInt(data.channel_id)
+      d = parseInt(current_user_id)
+      e = parseInt(unread_messages_nbr)
 
-      if parseInt(data.channel_id) in tab
-          d = d+1
-          $('#notification-'+c).removeClass('hidden')
-          $('#notification-'+c).html(d)
-
+      if c in tab
+          e = e+1
+          $('#notification-'+d).removeClass('hidden')
+          $('#notification-'+d).html(e)
 
       $('#unread-channel-'+data.channel_id).addClass('unread')

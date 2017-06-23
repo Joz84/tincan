@@ -2,9 +2,6 @@
   <div id="current_user_id">
     <%= current_user.id %>
   </div>
-  <div id="unread_messages_nbr">
-    <%= current_user.total_unread_messages_nbr.to_f %>
-  </div>
 </div>
 <div class="wrapper-messenger">
   <div class="container-fluid">
@@ -25,18 +22,22 @@
         <ul>
           <% current_user.channels.each do |channel| %>
             <li>
-              <% if current_user.unread_messages_nbr(channel) && (channel.messages.last.id != current_user.messages.last.id) %>
-              <div class="unread">
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
-              <% elsif (channel == @channel) %>
-              <div>
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
-              <% else %>
-              <div id="unread-channel-<%= channel.id %>">
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
+              <% if current_user.messages.last == nil %>
+              <% current_user.messages.last == 0 %>
+              <% end %>
+
+              <% if current_user.unread_messages_nbr(channel) == 0 %>
+                <div id="unread-channel-<%= channel.id %>">
+                  <%= link_to channel.default_name(current_user), channel %>
+                </div>
+                <% elsif (channel == @channel) && (channel.messages.last != current_user.messages.last) %>
+                <div>
+                  <%= link_to channel.default_name(current_user), channel %>
+                </div>
+                <% else %>
+                <div class="unread" id="unread-channel-<%= channel.id %>">
+                  <%= link_to channel.default_name(current_user), channel %>
+                </div>
               <% end %>
             </li>
           <% end %>
