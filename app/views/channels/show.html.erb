@@ -27,15 +27,15 @@
               <% end %>
 
               <% if current_user.unread_messages_nbr(channel) == 0 %>
-                <div id="unread-channel-<%= channel.id %>">
+                <div id="unread-channel-<%= channel.id %>"> <!-- 2 PB : mets en rouge ton channel quand tu envois un msg, et mets une notif aussi si tu es dans le channel -->
                   <%= link_to channel.default_name(current_user), channel %>
                 </div>
-                <% elsif (channel == @channel) && (channel.messages.last != current_user.messages.last) %>
+                <% elsif (channel == @channel) && (channel.messages.last == current_user.messages.last) %>
                 <div>
                   <%= link_to channel.default_name(current_user), channel %>
                 </div>
                 <% else %>
-                <div class="unread" id="unread-channel-<%= channel.id %>">
+                <div class="unread">
                   <%= link_to channel.default_name(current_user), channel %>
                 </div>
               <% end %>
@@ -43,10 +43,10 @@
           <% end %>
         </ul>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-10" id="message-box">
         <ul id="messages-table">
           <% @channel.messages.each_with_index do |message, index| %>
-            <% if index == @new_messages_limit %> <!-- need to be done with action cable too -->
+            <% if index == @new_messages_limit %>
               New message <hr>
             <% end %>
             <li id="message-container">
@@ -64,7 +64,7 @@
           <% end %>
         </ul>
         <%= simple_form_for [@channel, @message], remote: true do |f| %>
-          <%= f.input :content, label: false %>
+          <%= f.input :content, label: false, id: "chat-text" %>
           <%= f.button :submit, 'Send', id:"submit-btn" %>
         <% end %>
       </div>
