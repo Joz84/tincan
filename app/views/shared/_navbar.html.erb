@@ -14,6 +14,11 @@
       <%= link_to "#", class: "navbar-wagon-item navbar-wagon-link" do %>
         <div class="badge-container">
           <i class="fa fa-envelope-o"></i>
+          <div class="hidden">
+            <div id="current_user_id">
+              <%= current_user.id %>
+            </div>
+          </div>
           <% if current_user.total_unread_messages_nbr %>
                 <div class="badge badge-blue <%= 'hidden' if current_user.total_unread_messages_nbr == 0 %>" id="notification-<%= current_user.id %>">
                   <%= current_user.total_unread_messages_nbr %>

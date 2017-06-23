@@ -17,7 +17,6 @@ App.room = App.cable.subscriptions.create "NotificationChannel",
       d = parseInt(current_user_id)
       e = parseInt(unread_messages_nbr)
       f = parseInt(data.last_message_user_id)
-      console.log(f,d)
 
       if f isnt d
         if c in tab

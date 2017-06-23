@@ -1,4 +1,4 @@
-<div id="infos_for_messages_and_notifications">
+<div class="hidden">
   <div id="current_user_id">
     <%= current_user.id %>
   </div>
@@ -23,22 +23,11 @@
           <% current_user.channels.each do |channel| %>
             <li>
               <% if current_user.messages.last == nil %>
-              <% current_user.messages.last == 0 %>
+                <% current_user.messages.last == 0 %>
               <% end %>
-
-              <% if current_user.unread_messages_nbr(channel) == 0 %>
-                <div id="unread-channel-<%= channel.id %>"> <!-- 2 PB : mets en rouge ton channel quand tu envois un msg, et mets une notif aussi si tu es dans le channel -->
-                  <%= link_to channel.default_name(current_user), channel %>
-                </div>
-                <% elsif (channel == @channel) && (channel.messages.last == current_user.messages.last) %>
-                <div>
-                  <%= link_to channel.default_name(current_user), channel %>
-                </div>
-                <% else %>
-                <div class="unread">
-                  <%= link_to channel.default_name(current_user), channel %>
-                </div>
-              <% end %>
+              <div <%= unread_channel_class(current_user, channel, @channel)%> >
+                <%= link_to channel.default_name(current_user), channel %>
+              </div>
             </li>
           <% end %>
         </ul>
