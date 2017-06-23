@@ -1,4 +1,4 @@
-<div id="infos_for_messages_and_notifications">
+<div class="hidden">
   <div id="current_user_id">
     <%= current_user.id %>
   </div>
@@ -22,27 +22,20 @@
         <ul>
           <% current_user.channels.each do |channel| %>
             <li>
-              <% if current_user.unread_messages_nbr(channel) && (channel.messages.last.id != current_user.messages.last.id) %>
-              <div class="unread">
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
-              <% elsif (channel == @channel) %>
-              <div>
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
-              <% else %>
-              <div id="unread-channel-<%= channel.id %>">
-                <%= link_to channel.default_name(current_user), channel %>
-              </div>
+              <% if current_user.messages.last == nil %>
+                <% current_user.messages.last == 0 %>
               <% end %>
+              <div <%= unread_channel_class(current_user, channel, @channel)%> >
+                <%= link_to channel.default_name(current_user), channel %>
+              </div>
             </li>
           <% end %>
         </ul>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-10" id="message-box">
         <ul id="messages-table">
           <% @channel.messages.each_with_index do |message, index| %>
-            <% if index == @new_messages_limit %> <!-- need to be done with action cable too -->
+            <% if index == @new_messages_limit %>
               New message <hr>
             <% end %>
             <li id="message-container">
@@ -60,7 +53,7 @@
           <% end %>
         </ul>
         <%= simple_form_for [@channel, @message], remote: true do |f| %>
-          <%= f.input :content, label: false %>
+          <%= f.input :content, label: false, id: "chat-text" %>
           <%= f.button :submit, 'Send', id:"submit-btn" %>
         <% end %>
       </div>

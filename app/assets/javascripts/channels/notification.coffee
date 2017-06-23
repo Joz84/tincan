@@ -11,7 +11,16 @@ App.room = App.cable.subscriptions.create "NotificationChannel",
     # Called when there's incoming data on the websocket for this channel
     unless data.content.blank?
       current_user_id = $('#current_user_id').text()
-      c = current_user_id
+      unread_messages_nbr = $('.badge-blue').text()
+      tab = gon.tab
+      c = parseInt(data.channel_id)
+      d = parseInt(current_user_id)
+      e = parseInt(unread_messages_nbr)
+      f = parseInt(data.last_message_user_id)
 
-
-      $('#unread-channel-'+data.channel_id).addClass('unread')
+      if f isnt d
+        if c in tab
+          e = e+1
+          $('#notification-'+d).removeClass('hidden')
+          $('#notification-'+d).html(e)
+        $('#unread-channel-'+data.channel_id).addClass('unread')
