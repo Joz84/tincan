@@ -6,7 +6,7 @@
 <div class="wrapper-messenger">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-2" id="channel-list">
         <p><%= link_to "Create a new channel", new_channel_path %></p>
         <h3><%= @channel.default_name(current_user) %></h3>
         <% if @channel.one_to_one? || @admin %>
