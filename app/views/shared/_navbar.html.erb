@@ -15,15 +15,9 @@
         <div class="badge-container">
           <i class="fa fa-envelope-o"></i>
           <% if current_user.total_unread_messages_nbr %>
-              <% if current_user.total_unread_messages_nbr == 0 %>
-                <div class="badge badge-blue hidden" id="notification-<%= current_user.id %>">
+                <div class="badge badge-blue <%= 'hidden' if current_user.total_unread_messages_nbr == 0 %>" id="notification-<%= current_user.id %>">
                   <%= current_user.total_unread_messages_nbr %>
                 </div>
-              <% else %>
-                <div class="badge badge-blue" id="notification-<%= current_user.id %>">
-                  <%= current_user.total_unread_messages_nbr %>
-                </div>
-              <% end %>
           <% end %>
         </div>
       <% end %>
