@@ -30,6 +30,7 @@
 #channel-list {
   position: fixed;
   left:0;
+  z-index: 9999;
 }
 
 @media screen and (max-width:640px){
