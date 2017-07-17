@@ -44,6 +44,8 @@
 <% end %>
 
 <%= link_to "Delete the channel #{@channel.default_name(current_user)}", @channel, method: :delete, data: {confirm: "Are you sure! Do you want delete the channel #{@channel.default_name(current_user)}"}  %>
+
+
 <!-- <a data-toggle="modal" href="/" data-target="#modal">Click me</a>
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
