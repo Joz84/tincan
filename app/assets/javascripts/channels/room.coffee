@@ -21,6 +21,7 @@ App.room = App.cable.subscriptions.create "RoomChannel",
 
 $(document).ready ->
   submit_message()
+  scroll_bottom()
 
 submit_message = () ->
   $('#message_content').on 'keydown', (event) ->

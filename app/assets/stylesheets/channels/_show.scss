@@ -26,3 +26,21 @@
 .iframe {
   width:20em;
 }
+#message-box {
+  padding-left:15em;
+}
+
+#channel-list {
+  position: fixed;
+  left:0;
+  z-index: 9999;
+}
+
+@media screen and (max-width:640px){
+  #channel-list {
+    position:relative !important;
+  }
+  #message-box {
+    padding-left: 1em !important;
+  }
+}
