@@ -13,8 +13,10 @@ App.room = App.cable.subscriptions.create "RoomChannel",
       current_user_id = $('#current_user_id').text()
       a = data.user_id
       b = parseInt(current_user_id)
+      x = if data.image_preview.nil? then 'cool' else data.image_preview
+
       $('#messages-table').append '<li id="#message-container"><div id="message-infos"><h1>' + data.alias + '</h1> <p> | '+ data.msg_date+'</p></div>' +
-      '<div class="content">' + data.image_link + '</div> <div class="iframe">'+ data.image_preview + '</div></li>'
+      '<div class="content">'+data.image_link +'</div> <div class="iframe">'+ x +'</div></li>'
       if a is b
         $('#messages-table').append "<div id='delete-btn'><a data-confirm='Are you sure! Do you want delete this post' rel='nofollow' data-method='delete' href='/channels/"+data.channel_id+"/messages/"+data.message_id+"'>delete</a>"
       scroll_bottom()

@@ -8,6 +8,8 @@ class MessagesController < ApplicationController
                           )
 
     if @message.save
+      @iframely = Iframely::Requester.new api_key: ENV['IFRAMELY_KEY']
+
       ActionCable.server.broadcast "room_channel_#{@channel.id}",
                                     channel_id: @channel.id,
                                     message_id: @message.id,
@@ -15,8 +17,8 @@ class MessagesController < ApplicationController
                                     msg_date: @message.updated_at.strftime("%d/%m/%y à %Hh%M"),
                                     alias: current_user.alias,
                                     user_id: current_user.id,
-                                    image_link: Rinku.auto_link(@message.content, :all, 'target="_blank"').html_safe,
-                                    image_preview: @iframely.get_oembed_json(@channel.messages.first_url)["html"].html_safe if @iframely.get_oembed_json(@channel.messages.first_url)["html"]
+                                    image_link: Rinku.auto_link(@message.content, :all).html_safe,
+                                    image_preview: @iframely.get_oembed_json(@message.first_url)["html"].html_safe if @iframely.get_oembed_json(@message.first_url)["html"]
 
       ActionCable.server.broadcast "notification_channel",
                                     content: @message.content,
@@ -49,4 +51,5 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(:content)
   end
+
 end
