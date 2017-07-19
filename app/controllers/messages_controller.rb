@@ -18,7 +18,7 @@ class MessagesController < ApplicationController
                                     alias: current_user.alias,
                                     user_id: current_user.id,
                                     image_link: Rinku.auto_link(@message.content, :all).html_safe,
-                                    image_preview: @iframely.get_oembed_json(@message.first_url)["html"].html_safe if @iframely.get_oembed_json(@message.first_url)["html"]
+                                    image_preview: @iframely.get_oembed_json(@message.first_url)['html'] if @iframely.get_oembed_json(@message.first_url)
 
       ActionCable.server.broadcast "notification_channel",
                                     content: @message.content,
